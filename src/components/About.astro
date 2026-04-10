@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 ---
 <section class="about" id="about">
   <div class="about__inner">
@@ -22,6 +23,23 @@
       <p class="about__body">
         Parce qu'une bonne pizza, ça ne s'improvise pas.
       </p>
+
+      <!-- Feature pills -->
+      <ul class="about__features">
+        <li class="about__feature">
+          <Icon name="lucide:flame" class="about__feature-icon" />
+          Four à bois
+        </li>
+        <li class="about__feature">
+          <Icon name="lucide:leaf" class="about__feature-icon" />
+          Ingrédients frais
+        </li>
+        <li class="about__feature">
+          <Icon name="lucide:clock" class="about__feature-icon" />
+          Pâte 48h
+        </li>
+      </ul>
+
       <a href="#menu" class="btn btn--red about__cta">Découvrir la Carte</a>
     </div>
   </div>
@@ -40,11 +58,7 @@
     gap: 5rem;
   }
 
-  /* Visual / badge side */
-  .about__visual {
-    flex-shrink: 0;
-    position: relative;
-  }
+  .about__visual { flex-shrink: 0; position: relative; }
   .about__ring {
     width: 280px;
     height: 280px;
@@ -59,8 +73,6 @@
     border-radius: 50%;
     object-fit: cover;
   }
-
-  /* Checker dot grid behind the badge */
   .about__dots {
     position: absolute;
     inset: -24px -24px auto auto;
@@ -72,7 +84,6 @@
     z-index: -1;
   }
 
-  /* Text side */
   .about__label {
     font-size: 0.8rem;
     font-weight: 600;
@@ -89,10 +100,7 @@
     color: var(--dark);
     margin-bottom: 1.5rem;
   }
-  .about__title em {
-    font-style: italic;
-    color: var(--red);
-  }
+  .about__title em { font-style: italic; color: var(--red); }
   .about__body {
     font-size: 1rem;
     line-height: 1.75;
@@ -100,15 +108,37 @@
     margin-bottom: 1rem;
     max-width: 52ch;
   }
-  .about__cta { margin-top: 1rem; }
+
+  /* Feature pills */
+  .about__features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    list-style: none;
+    margin: 1.5rem 0;
+  }
+  .about__feature {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border: 1.5px solid var(--dark);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--dark);
+  }
+  .about__feature-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: var(--red);
+    flex-shrink: 0;
+  }
 
   @media (max-width: 820px) {
-    .about__inner {
-      flex-direction: column;
-      gap: 3rem;
-      text-align: center;
-    }
+    .about__inner { flex-direction: column; gap: 3rem; text-align: center; }
     .about__body { max-width: 100%; }
+    .about__features { justify-content: center; }
     .about__dots { inset: -16px -16px auto auto; width: 80px; height: 80px; }
   }
 </style>
