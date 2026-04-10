@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
+    "@fontsource/bebas-neue": "^5.2.7",
+    "@fontsource/dm-sans": "^5.2.8",
+    "@fontsource/playfair-display": "^5.2.8",
     "@iconify-json/lucide": "^1.2.102",
     "@iconify-json/simple-icons": "^1.2.77",
     "astro": "^5.7.0",
     "astro-icon": "^1.1.5"
   },
   "devDependencies": {
+    "sharp": "^0.34.5",
     "wrangler": "^4.0.0"
   }
 }

@@ -11,12 +11,14 @@ import { menu } from '../data/menu';
 
 <Layout>
   <Nav />
-  <Hero />
-  <div class="checker"></div>
-  <MenuSection menu={menu} />
-  <div class="checker checker--blue"></div>
-  <About />
-  <Hours />
+  <main>
+    <Hero />
+    <div class="checker"></div>
+    <MenuSection menu={menu} />
+    <div class="checker checker--blue"></div>
+    <About />
+    <Hours />
+  </main>
   <div class="checker checker--dark"></div>
   <Footer />
 </Layout>

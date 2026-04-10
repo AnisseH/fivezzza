@@ -1,11 +1,20 @@
 ---
+// Self-hosted fonts — eliminates render-blocking Google Fonts request
+import '@fontsource/bebas-neue/400.css';
+import '@fontsource/playfair-display/400.css';
+import '@fontsource/playfair-display/700.css';
+import '@fontsource/playfair-display/400-italic.css';
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/500.css';
+import '@fontsource/dm-sans/600.css';
+
 interface Props {
   title?: string;
   description?: string;
 }
 const {
   title = 'Fivezzza Pizzeria | Pizza Artisanale à Lille',
-  description = 'Fivezzza, pizzeria artisanale à Lille. Pâte maison levée 48h, ingrédients frais sélectionnés. Ouvert midi et soir — Pass. de l\'Internationale, 59800 Lille.',
+  description = "Fivezzza, pizzeria artisanale à Lille. Pâte maison levée 48h, ingrédients frais sélectionnés. Ouvert midi et soir — Pass. de l'Internationale, 59800 Lille.",
 } = Astro.props;
 
 const siteUrl = 'https://fivezzza.pages.dev';
@@ -59,7 +68,7 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={siteUrl} />
 
-    <!-- Open Graph (social sharing) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="restaurant" />
     <meta property="og:site_name" content="Fivezzza Pizzeria" />
     <meta property="og:title" content={title} />
@@ -75,19 +84,11 @@ const jsonLd = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Local business structured data -->
+    <!-- Structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="/logo.jpeg" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <body>
     <slot />
@@ -116,7 +117,6 @@ const jsonLd = {
     overflow-x: hidden;
   }
 
-  /* Checkered divider */
   .checker {
     height: 28px;
     background-image: repeating-conic-gradient(var(--red) 0% 25%, var(--cream) 0% 50%);
@@ -130,7 +130,6 @@ const jsonLd = {
     height: 20px;
   }
 
-  /* Shared button */
   .btn {
     display: inline-block;
     padding: 0.875rem 2.5rem;
@@ -144,8 +143,8 @@ const jsonLd = {
     cursor: pointer;
     transition: background 0.2s, color 0.2s, transform 0.15s;
   }
-  .btn--red  { background: var(--red);  color: var(--cream); border-color: var(--red); }
-  .btn--red:hover  { background: var(--red-d); border-color: var(--red-d); transform: translateY(-2px); }
+  .btn--red  { background: var(--red); color: var(--cream); border-color: var(--red); }
+  .btn--red:hover { background: var(--red-d); border-color: var(--red-d); transform: translateY(-2px); }
   .btn--outline { background: transparent; color: var(--cream); border-color: var(--cream); }
   .btn--outline:hover { background: var(--cream); color: var(--dark); }
 </style>
