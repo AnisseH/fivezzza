@@ -1,0 +1,168 @@
+---
+const schedule = [
+  { day: 'Lundi',     hours: 'Fermé' },
+  { day: 'Mardi',     hours: '11h30 – 14h30 · 18h00 – 22h30' },
+  { day: 'Mercredi',  hours: '11h30 – 14h30 · 18h00 – 22h30' },
+  { day: 'Jeudi',     hours: '11h30 – 14h30 · 18h00 – 22h30' },
+  { day: 'Vendredi',  hours: '11h30 – 14h30 · 18h00 – 23h00' },
+  { day: 'Samedi',    hours: '12h00 – 23h00' },
+  { day: 'Dimanche',  hours: '12h00 – 22h00' },
+];
+---
+
+<section class="hours" id="hours">
+  <div class="checker checker--dark"></div>
+
+  <div class="hours__inner">
+    <div class="hours__schedule">
+      <p class="hours__label">Retrouvez-nous</p>
+      <h2 class="hours__title">Horaires & Adresse</h2>
+
+      <table class="hours__table">
+        <tbody>
+          {schedule.map(({ day, hours }) => (
+            <tr class={hours === 'Fermé' ? 'hours__row--closed' : ''}>
+              <td class="hours__day">{day}</td>
+              <td class="hours__time">{hours}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="hours__contact">
+      <div class="hours__info-block">
+        <p class="hours__info-label">Adresse</p>
+        <address class="hours__address">
+          12 rue de la Pizzaiola<br />
+          75000 Paris<br />
+          France
+        </address>
+      </div>
+      <div class="hours__info-block">
+        <p class="hours__info-label">Téléphone</p>
+        <a href="tel:+330100000000" class="hours__phone">01 00 00 00 00</a>
+      </div>
+      <div class="hours__info-block">
+        <p class="hours__info-label">Réseaux sociaux</p>
+        <a
+          href="https://www.instagram.com/fivezzza/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hours__ig"
+        >
+          @fivezzza
+        </a>
+      </div>
+
+      <!-- Placeholder map frame -->
+      <div class="hours__map" aria-label="Carte — remplacer avec Google Maps embed">
+        <div class="hours__map-placeholder">
+          <span>🗺 Carte à configurer</span>
+          <small>Remplacer par un iframe Google Maps</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hours {
+    background: var(--dark);
+    color: var(--cream);
+  }
+  .hours__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem 6rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .hours__label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.4rem;
+  }
+  .hours__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.04em;
+    color: var(--cream);
+    margin-bottom: 2rem;
+  }
+
+  /* Table */
+  .hours__table { width: 100%; border-collapse: collapse; }
+  .hours__table tr {
+    border-bottom: 1px solid rgba(245,237,216,0.1);
+  }
+  .hours__table tr:last-child { border-bottom: none; }
+  .hours__day,
+  .hours__time {
+    padding: 0.7rem 0;
+    font-size: 0.9rem;
+  }
+  .hours__day {
+    font-weight: 600;
+    color: var(--cream);
+    width: 40%;
+  }
+  .hours__time { color: rgba(245,237,216,0.65); }
+  .hours__row--closed .hours__day,
+  .hours__row--closed .hours__time { color: rgba(245,237,216,0.3); }
+
+  /* Contact side */
+  .hours__info-block { margin-bottom: 1.75rem; }
+  .hours__info-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.4rem;
+  }
+  .hours__address {
+    font-style: normal;
+    line-height: 1.65;
+    color: rgba(245,237,216,0.8);
+  }
+  .hours__phone,
+  .hours__ig {
+    color: var(--cream);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .hours__phone:hover,
+  .hours__ig:hover { color: var(--red); }
+
+  /* Map placeholder */
+  .hours__map {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--grey);
+    border: 2px dashed rgba(245,237,216,0.15);
+    margin-top: 0.5rem;
+  }
+  .hours__map-placeholder {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: rgba(245,237,216,0.4);
+  }
+  .hours__map-placeholder span { font-size: 1.1rem; }
+  .hours__map-placeholder small { font-size: 0.75rem; }
+
+  @media (max-width: 820px) {
+    .hours__inner { grid-template-columns: 1fr; gap: 3rem; }
+  }
+</style>

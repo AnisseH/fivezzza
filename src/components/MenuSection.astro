@@ -1,0 +1,150 @@
+---
+import type { Category } from '../data/menu';
+
+interface Props { menu: Category[]; }
+const { menu } = Astro.props;
+---
+
+<section class="menu" id="menu">
+  <div class="menu__inner">
+    <p class="menu__label">Notre</p>
+    <h2 class="menu__title">La Carte</h2>
+
+    <!-- Category tabs -->
+    <div class="menu__tabs" role="tablist">
+      {menu.map((cat, i) => (
+        <button
+          class={`menu__tab ${i === 0 ? 'menu__tab--active' : ''}`}
+          data-cat={cat.id}
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {cat.name}
+        </button>
+      ))}
+    </div>
+
+    <!-- Item grids per category -->
+    {menu.map((cat, i) => (
+      <div
+        class={`menu__grid ${i === 0 ? 'menu__grid--visible' : ''}`}
+        data-grid={cat.id}
+        role="tabpanel"
+      >
+        {cat.items.map(item => (
+          <article class="menu__card">
+            <div class="menu__card-top">
+              <h3 class="menu__card-name">{item.name}</h3>
+              <span class="menu__card-price">{item.price.toFixed(2)} €</span>
+            </div>
+            <p class="menu__card-desc">{item.description}</p>
+          </article>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.menu__tab');
+  const grids = document.querySelectorAll<HTMLElement>('.menu__grid');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => { t.classList.remove('menu__tab--active'); t.setAttribute('aria-selected', 'false'); });
+      grids.forEach(g => g.classList.remove('menu__grid--visible'));
+      tab.classList.add('menu__tab--active');
+      tab.setAttribute('aria-selected', 'true');
+      document.querySelector(`.menu__grid[data-grid="${tab.dataset.cat}"]`)?.classList.add('menu__grid--visible');
+    });
+  });
+</script>
+
+<style>
+  .menu {
+    background: var(--cream);
+    padding: 6rem 2rem;
+  }
+  .menu__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .menu__label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.25rem;
+  }
+  .menu__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    letter-spacing: 0.04em;
+    color: var(--dark);
+    margin-bottom: 2.5rem;
+  }
+
+  .menu__tabs {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+  .menu__tab {
+    padding: 0.6rem 1.75rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--dark);
+    border: 2px solid var(--dark);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .menu__tab:hover,
+  .menu__tab--active {
+    background: var(--red);
+    color: var(--cream);
+    border-color: var(--red);
+  }
+
+  .menu__grid { display: none; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+  .menu__grid--visible { display: grid; }
+
+  .menu__card {
+    background: white;
+    border: 2px solid transparent;
+    padding: 1.5rem 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .menu__card:hover { border-color: var(--red); transform: translateY(-3px); }
+  .menu__card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .menu__card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--dark);
+  }
+  .menu__card-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: var(--red);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .menu__card-desc {
+    font-size: 0.875rem;
+    color: #6b6478;
+    line-height: 1.55;
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+---
+<nav class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="#home" class="nav__logo" aria-label="Fivezzza — retour accueil">
+      <img src="/logo.jpeg" alt="Fivezzza Pizzeria" />
+    </a>
+    <ul class="nav__links" role="list">
+      <li><a href="#menu">La Carte</a></li>
+      <li><a href="#about">Notre Histoire</a></li>
+      <li><a href="#hours">Horaires</a></li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const nav = document.getElementById('nav')!;
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('nav--scrolled', window.scrollY > 60);
+  }, { passive: true });
+</script>
+
+<style>
+  .nav {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 100;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .nav--scrolled {
+    background: var(--dark);
+    box-shadow: 0 2px 24px rgba(0,0,0,0.4);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.75rem 2rem;
+  }
+  .nav__logo img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(245,237,216,0.5);
+    transition: border-color 0.2s;
+  }
+  .nav__logo:hover img { border-color: var(--red); }
+  .nav__links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav__links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+    transition: color 0.2s;
+  }
+  .nav--scrolled .nav__links a { text-shadow: none; }
+  .nav__links a:hover { color: var(--red); }
+
+  @media (max-width: 540px) {
+    .nav__links { gap: 1.25rem; }
+    .nav__links a { font-size: 0.7rem; }
+  }
+</style>

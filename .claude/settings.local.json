@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.bellabarbara.com)",
+      "WebFetch(domain:www.instagram.com)",
+      "WebFetch(domain:i.imgur.com)",
+      "Bash(curl -L \"https://i.imgur.com/5ifM5kC.jpeg\" -o /tmp/fivezzza_logo.jpeg)",
+      "Bash(npm install:*)",
+      "Bash(export PATH=\"/c/Users/Anisse/AppData/Local/nvm/v24.14.1:/c/Users/Anisse/AppData/Local/nvm/v24.14.1/node_modules/.bin:$PATH\")",
+      "Bash(npm run:*)",
+      "Bash(curl -s http://localhost:4321)",
+      "Bash(git --version)",
+      "Bash(gh --version)"
+    ]
+  }
+}

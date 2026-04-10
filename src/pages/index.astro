@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import MenuSection from '../components/MenuSection.astro';
+import About from '../components/About.astro';
+import Hours from '../components/Hours.astro';
+import Footer from '../components/Footer.astro';
+import { menu } from '../data/menu';
+---
+
+<Layout>
+  <Nav />
+  <Hero />
+  <div class="checker"></div>
+  <MenuSection menu={menu} />
+  <div class="checker checker--blue"></div>
+  <About />
+  <Hours />
+  <div class="checker checker--dark"></div>
+  <Footer />
+</Layout>
