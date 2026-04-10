@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import heroImg from '../assets/hero-bg.jpg';
+import logoImg from '../assets/logo.jpeg';
 ---
 
 <section class="hero" id="home">
@@ -14,7 +15,7 @@ import heroImg from '../assets/hero-bg.jpg';
       class="hero__bg-img"
       loading="eager"
       fetchpriority="high"
-      quality={80}
+      quality={65}
       widths={[768, 1280, 1920]}
       sizes="100vw"
     />
@@ -23,12 +24,14 @@ import heroImg from '../assets/hero-bg.jpg';
 
     <div class="hero__content">
       <div class="hero__badge">
-        <img
-          src="/logo.jpeg"
+        <Image
+          src={logoImg}
           alt="Fivezzza Pizzeria logo"
-          width="240"
-          height="240"
+          width={240}
+          height={240}
+          quality={85}
           fetchpriority="high"
+          loading="eager"
         />
       </div>
 

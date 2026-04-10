@@ -5,4 +5,7 @@ import icon from 'astro-icon';
 export default defineConfig({
   site: 'https://fivezzza.pages.dev', // update once you have a custom domain
   integrations: [sitemap(), icon()],
+  build: {
+    inlineStylesheets: 'always',
+  },
 });

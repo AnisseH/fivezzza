@@ -5,7 +5,6 @@ import '@fontsource/playfair-display/400.css';
 import '@fontsource/playfair-display/700.css';
 import '@fontsource/playfair-display/400-italic.css';
 import '@fontsource/dm-sans/400.css';
-import '@fontsource/dm-sans/500.css';
 import '@fontsource/dm-sans/600.css';
 
 interface Props {
@@ -97,13 +96,15 @@ const jsonLd = {
 
 <style is:global>
   :root {
-    --red:   #E0442C;
-    --red-d: #C23820;
-    --blue:  #2855B5;
-    --blue-l:#4070D0;
-    --cream: #F5EDD8;
-    --dark:  #1A1720;
-    --grey:  #2E2A38;
+    --red:        #E0442C;
+    --red-a11y:   #B53022; /* darkened red — 4.7:1 on cream, 5.4:1 on white */
+    --red-on-dark:#E86048; /* lighter red — 5.0:1 on --dark */
+    --red-d:      #9E2B18;
+    --blue:       #2855B5;
+    --blue-l:     #4070D0;
+    --cream:      #F5EDD8;
+    --dark:       #1A1720;
+    --grey:       #2E2A38;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -143,7 +144,7 @@ const jsonLd = {
     cursor: pointer;
     transition: background 0.2s, color 0.2s, transform 0.15s;
   }
-  .btn--red  { background: var(--red); color: var(--cream); border-color: var(--red); }
+  .btn--red  { background: var(--red-a11y); color: var(--cream); border-color: var(--red-a11y); }
   .btn--red:hover { background: var(--red-d); border-color: var(--red-d); transform: translateY(-2px); }
   .btn--outline { background: transparent; color: var(--cream); border-color: var(--cream); }
   .btn--outline:hover { background: var(--cream); color: var(--dark); }

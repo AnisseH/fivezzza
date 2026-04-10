@@ -82,7 +82,7 @@ const { menu } = Astro.props;
     font-weight: 600;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--red);
+    color: var(--red-a11y);
     margin-bottom: 0.25rem;
   }
   .menu__label-icon {
@@ -118,9 +118,9 @@ const { menu } = Astro.props;
   }
   .menu__tab:hover,
   .menu__tab--active {
-    background: var(--red);
+    background: var(--red-a11y);
     color: var(--cream);
-    border-color: var(--red);
+    border-color: var(--red-a11y);
   }
 
   .menu__grid { display: none; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
@@ -149,7 +149,7 @@ const { menu } = Astro.props;
   .menu__card-price {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.3rem;
-    color: var(--red);
+    color: var(--red-a11y);
     white-space: nowrap;
     flex-shrink: 0;
   }
