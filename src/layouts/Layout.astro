@@ -4,24 +4,90 @@ interface Props {
   description?: string;
 }
 const {
-  title = 'Fivezzza Pizzeria',
-  description = 'Pizza artisanale à pâte maison, ingrédients frais sélectionnés.',
+  title = 'Fivezzza Pizzeria | Pizza Artisanale à Lille',
+  description = 'Fivezzza, pizzeria artisanale à Lille. Pâte maison levée 48h, ingrédients frais sélectionnés. Ouvert midi et soir — Pass. de l\'Internationale, 59800 Lille.',
 } = Astro.props;
+
+const siteUrl = 'https://fivezzza.pages.dev';
+const ogImage = `${siteUrl}/logo.jpeg`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  name: 'Fivezzza Pizzeria',
+  image: ogImage,
+  url: siteUrl,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: "Pass. de l'Internationale",
+    addressLocality: 'Lille',
+    postalCode: '59800',
+    addressCountry: 'FR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 50.6276912,
+    longitude: 3.0927066,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '12:00',
+      closes: '14:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '19:00',
+      closes: '22:00',
+    },
+  ],
+  servesCuisine: ['Pizza', 'Italian'],
+  priceRange: '€€',
+  sameAs: ['https://www.instagram.com/fivezzza/'],
+};
 ---
 <!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO -->
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={siteUrl} />
+
+    <!-- Open Graph (social sharing) -->
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:site_name" content="Fivezzza Pizzeria" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="Logo Fivezzza Pizzeria" />
+    <meta property="og:locale" content="fr_FR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Local business structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="/logo.jpeg" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap"
       rel="stylesheet"
     />
-    <title>{title}</title>
   </head>
   <body>
     <slot />
