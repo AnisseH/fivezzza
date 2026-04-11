@@ -5,4 +5,4 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding      = "DB"
 database_name = "fivezzza-db"
-database_id   = "REPLACE_AFTER_DB_CREATE"
+database_id   = "bf4a0c68-08a4-4964-a63c-b5d6d3257796"
