@@ -1,11 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import logoImg from '../assets/logo.jpeg';
 const year = new Date().getFullYear();
 ---
 <footer class="footer">
   <div class="footer__inner">
     <a href="#home" class="footer__logo">
-      <img src="/logo.jpeg" alt="Fivezzza Pizzeria" width="72" height="72" loading="lazy" />
+      <Image src={logoImg} alt="Fivezzza Pizzeria" width={72} height={72} quality={80} loading="lazy" />
     </a>
     <p class="footer__tagline">Pizza artisanale · Pâte maison</p>
 
