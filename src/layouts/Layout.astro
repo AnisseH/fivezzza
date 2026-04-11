@@ -1,4 +1,5 @@
 ---
+import { menu } from '../data/menu';
 // Self-hosted fonts — eliminates render-blocking Google Fonts request
 import '@fontsource/bungee-shade/400.css';
 import '@fontsource/bebas-neue/400.css';
@@ -57,10 +58,31 @@ const jsonLd = {
   ],
   servesCuisine: ['Pizza', 'Italian'],
   priceRange: '€€',
+  acceptsReservations: false,
   sameAs: [
     'https://www.instagram.com/fivezzza/',
     'https://maps.app.goo.gl/4Sbf9ZhPRvgA2esM6',
   ],
+};
+
+const menuJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Menu',
+  '@id': `${siteUrl}/#menu-schema`,
+  hasMenuSection: menu.map(cat => ({
+    '@type': 'MenuSection',
+    name: cat.name,
+    hasMenuItem: cat.items.map(item => ({
+      '@type': 'MenuItem',
+      name: item.name,
+      ...(item.description ? { description: item.description } : {}),
+      offers: {
+        '@type': 'Offer',
+        price: String(item.price),
+        priceCurrency: 'EUR',
+      },
+    })),
+  })),
 };
 ---
 <!doctype html>
@@ -87,16 +109,17 @@ const jsonLd = {
     <meta property="og:locale" content="fr_FR" />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
     <!-- Structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(menuJsonLd)} />
 
     <!-- Animations -->
-    <script src="/gsap.min.js" is:inline></script>
+    <script src="/gsap.min.js" defer is:inline></script>
     <script src="/ScrollTrigger.min.js" defer is:inline></script>
     <script src="/hero-anim.js" defer is:inline></script>
     <script src="/pizza-drift.js" defer is:inline></script>

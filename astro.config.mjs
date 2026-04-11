@@ -9,7 +9,12 @@ export default defineConfig({
   adapter: cloudflare({
     platformProxy: { enabled: true },
   }),
-  integrations: [sitemap(), icon()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/admin'),
+    }),
+    icon(),
+  ],
   build: {
     inlineStylesheets: 'always',
   },
