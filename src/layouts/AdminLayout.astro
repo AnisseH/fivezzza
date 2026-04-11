@@ -1,0 +1,180 @@
+---
+interface Props {
+  title?: string;
+}
+const { title = 'Admin' } = Astro.props;
+const pathname = new URL(Astro.request.url).pathname;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Fivezzza Admin</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <header class="admin-nav">
+      <a href="/" class="admin-nav__brand" target="_blank" rel="noopener">
+        Fivezzza <span class="admin-nav__tag">↗ site</span>
+      </a>
+      <nav class="admin-nav__links">
+        <a href="/admin/menu" class:list={['admin-nav__link', { active: pathname === '/admin/menu' }]}>
+          Menu
+        </a>
+        <a href="/admin/hours" class:list={['admin-nav__link', { active: pathname === '/admin/hours' }]}>
+          Horaires
+        </a>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:   #E0442C;
+    --blue:  #2855B5;
+    --cream: #F5EDD8;
+    --dark:  #1A1720;
+    --border: #ddd;
+    --radius: 6px;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    color: #1a1a1a;
+    background: #f9f9f7;
+  }
+
+  /* Nav */
+  .admin-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+    height: 52px;
+    background: var(--dark);
+    border-bottom: 3px solid var(--red);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .admin-nav__brand {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    color: var(--cream);
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .admin-nav__tag {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    font-weight: 400;
+  }
+  .admin-nav__links {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: auto;
+  }
+  .admin-nav__link {
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: rgba(245,237,216,0.75);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background 0.15s, color 0.15s;
+  }
+  .admin-nav__link:hover { background: rgba(255,255,255,0.1); color: var(--cream); }
+  .admin-nav__link.active { background: var(--red); color: #fff; }
+
+  /* Main */
+  .admin-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* Shared form elements */
+  .admin-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .admin-card__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.25rem;
+    background: #f4f4f2;
+    border-bottom: 1px solid var(--border);
+  }
+  .admin-card__title {
+    font-weight: 700;
+    font-size: 1rem;
+    flex: 1;
+  }
+  .admin-card__body { padding: 1.25rem; }
+
+  label { display: block; font-size: 0.78rem; font-weight: 600; color: #555; margin-bottom: 0.3rem; }
+  input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: #fff;
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+  }
+  textarea { resize: vertical; min-height: 60px; }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .field-row--3 { grid-template-columns: 2fr 2fr 1fr; }
+  .field { margin-bottom: 0.75rem; }
+
+  /* Buttons */
+  .btn { cursor: pointer; border: none; border-radius: 4px; font-size: 0.85rem; font-weight: 600; padding: 0.45rem 0.9rem; transition: opacity 0.15s; }
+  .btn:hover { opacity: 0.85; }
+  .btn--primary { background: var(--blue); color: #fff; }
+  .btn--danger { background: #d32f2f; color: #fff; }
+  .btn--ghost { background: transparent; border: 1px solid var(--border); color: #444; }
+  .btn--sm { padding: 0.3rem 0.65rem; font-size: 0.78rem; }
+
+  /* Item table */
+  .item-table { width: 100%; border-collapse: collapse; }
+  .item-table th { text-align: left; font-size: 0.72rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .item-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #f0f0ee; vertical-align: top; font-size: 0.88rem; }
+  .item-table tr:last-child td { border-bottom: none; }
+
+  details > summary { cursor: pointer; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+
+  .edit-form { padding: 0.75rem; background: #f8f8f6; border-top: 1px solid var(--border); }
+  .edit-form .field-row { margin-bottom: 0.5rem; }
+
+  .page-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--dark); }
+  .section-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 0.75rem; }
+
+  .flash { padding: 0.75rem 1rem; border-radius: var(--radius); margin-bottom: 1rem; font-size: 0.88rem; }
+  .flash--error { background: #fdecea; color: #b71c1c; border: 1px solid #f5c6cb; }
+  .flash--success { background: #e8f5e9; color: #1b5e20; border: 1px solid #c8e6c9; }
+</style>

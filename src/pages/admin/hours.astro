@@ -1,0 +1,98 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+const db = Astro.locals.runtime.env.DB;
+const { results } = await db
+  .prepare('SELECT * FROM hours ORDER BY sort_order')
+  .all<{ id: number; day_label: string; time_range: string; sort_order: number }>();
+
+const url = new URL(Astro.request.url);
+const error = url.searchParams.get('error');
+const ok    = url.searchParams.get('ok');
+---
+
+<AdminLayout title="Horaires">
+  <h1 class="page-title">Horaires d'ouverture</h1>
+
+  {error && <div class="flash flash--error">Erreur : {error}</div>}
+  {ok    && <div class="flash flash--success">Horaires enregistrés.</div>}
+
+  <div class="admin-card">
+    <div class="admin-card__body" style="padding:0">
+      <form method="POST" action="/admin/api/hours" id="hours-form">
+        <table class="item-table">
+          <thead>
+            <tr>
+              <th style="width:160px">Jour</th>
+              <th>Horaires (ex: 12h00 – 14h00 · 19h00 – 22h00)</th>
+              <th style="width:70px"></th>
+            </tr>
+          </thead>
+          <tbody id="hours-body">
+            {results.map((row, i) => (
+              <tr class="hours-row">
+                <td>
+                  <input type="hidden" name="ids" value={row.id} />
+                  <input type="hidden" name="sort_orders" value={i + 1} />
+                  <input type="text" name="day_labels" value={row.day_label} required style="margin:0" />
+                </td>
+                <td>
+                  <input type="text" name="time_ranges" value={row.time_range} required style="margin:0" />
+                </td>
+                <td>
+                  <button type="button" class="btn btn--danger btn--sm remove-row">×</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div style="padding:0.75rem 1.25rem;border-top:1px solid #eee;display:flex;gap:0.75rem;align-items:center">
+          <button type="button" id="add-row" class="btn btn--ghost btn--sm">+ Ajouter une ligne</button>
+          <button type="submit" class="btn btn--primary">Enregistrer les horaires</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</AdminLayout>
+
+<template id="row-template">
+  <tr class="hours-row">
+    <td>
+      <input type="hidden" name="ids" value="" />
+      <input type="hidden" name="sort_orders" value="" />
+      <input type="text" name="day_labels" value="" required style="margin:0" placeholder="Lundi" />
+    </td>
+    <td>
+      <input type="text" name="time_ranges" value="" required style="margin:0" placeholder="Fermé" />
+    </td>
+    <td>
+      <button type="button" class="btn btn--danger btn--sm remove-row">×</button>
+    </td>
+  </tr>
+</template>
+
+<script>
+  const body = document.getElementById('hours-body')!;
+  const addBtn = document.getElementById('add-row')!;
+  const template = document.getElementById('row-template') as HTMLTemplateElement;
+
+  addBtn.addEventListener('click', () => {
+    const clone = template.content.cloneNode(true) as DocumentFragment;
+    const row = clone.querySelector('tr')!;
+    // Set sort_order to current row count + 1
+    const sortInput = row.querySelector('input[name="sort_orders"]') as HTMLInputElement;
+    sortInput.value = String(body.querySelectorAll('tr').length + 1);
+    body.appendChild(row);
+  });
+
+  body.addEventListener('click', (e) => {
+    const btn = (e.target as Element).closest('.remove-row');
+    if (btn) {
+      const row = btn.closest('tr');
+      if (body.querySelectorAll('tr').length > 1) {
+        row?.remove();
+      }
+    }
+  });
+</script>

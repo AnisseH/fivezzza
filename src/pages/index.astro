@@ -6,7 +6,52 @@ import MenuSection from '../components/MenuSection.astro';
 import About from '../components/About.astro';
 import Hours from '../components/Hours.astro';
 import Footer from '../components/Footer.astro';
-import { menu } from '../data/menu';
+import { menu as staticMenu } from '../data/menu';
+import type { Category } from '../data/menu';
+
+type HoursRow = { day: string; hours: string };
+
+let menu: Category[] = staticMenu;
+let schedule: HoursRow[] | undefined = undefined; // undefined = Hours uses its own default
+
+try {
+  const db = Astro.locals.runtime?.env?.DB;
+  if (db) {
+    const [cats, items, supps, hoursRows] = await Promise.all([
+      db.prepare('SELECT * FROM categories ORDER BY sort_order').all<{
+        id: string; name: string; sort_order: number;
+      }>(),
+      db.prepare('SELECT * FROM menu_items ORDER BY sort_order').all<{
+        id: number; category_id: string; name: string; description: string;
+        price: number; sort_order: number;
+      }>(),
+      db.prepare('SELECT * FROM supplements').all<{
+        id: number; category_id: string; label: string; detail: string; price: number;
+      }>(),
+      db.prepare('SELECT * FROM hours ORDER BY sort_order').all<{
+        id: number; day_label: string; time_range: string; sort_order: number;
+      }>(),
+    ]);
+
+    menu = cats.results.map(c => ({
+      id: c.id,
+      name: c.name,
+      items: items.results
+        .filter(i => i.category_id === c.id)
+        .map(i => ({ name: i.name, description: i.description, price: i.price })),
+      note: supps.results
+        .filter(s => s.category_id === c.id)
+        .map(s => ({ label: s.label, detail: s.detail, price: s.price }))[0],
+    }));
+
+    schedule = hoursRows.results.map(h => ({
+      day: h.day_label,
+      hours: h.time_range,
+    }));
+  }
+} catch (e) {
+  console.error('D1 query failed, falling back to static data:', e);
+}
 ---
 
 <Layout>
@@ -17,7 +62,7 @@ import { menu } from '../data/menu';
     <MenuSection menu={menu} />
     <div class="checker checker--blue"></div>
     <About />
-    <Hours />
+    <Hours schedule={schedule} />
   </main>
   <div class="checker checker--dark"></div>
   <Footer />

@@ -6,9 +6,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "astro build && wrangler pages deploy ./dist"
+    "deploy": "astro build && wrangler pages deploy ./dist",
+    "db:create": "wrangler d1 create fivezzza-db",
+    "db:migrate:local": "wrangler d1 migrations apply fivezzza-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply fivezzza-db --remote"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.13",
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource/bebas-neue": "^5.2.7",
     "@fontsource/bungee-shade": "^5.2.7",

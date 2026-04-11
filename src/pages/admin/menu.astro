@@ -1,0 +1,254 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+const db = Astro.locals.runtime.env.DB;
+
+const [cats, items, supps] = await Promise.all([
+  db.prepare('SELECT * FROM categories ORDER BY sort_order').all<{
+    id: string; name: string; sort_order: number;
+  }>(),
+  db.prepare('SELECT * FROM menu_items ORDER BY category_id, sort_order').all<{
+    id: number; category_id: string; name: string; description: string;
+    price: number; sort_order: number;
+  }>(),
+  db.prepare('SELECT * FROM supplements').all<{
+    id: number; category_id: string; label: string; detail: string; price: number;
+  }>(),
+]);
+
+const categories = cats.results;
+const allItems = items.results;
+const allSupps = supps.results;
+
+const url = new URL(Astro.request.url);
+const error = url.searchParams.get('error');
+const ok    = url.searchParams.get('ok');
+---
+
+<AdminLayout title="Menu">
+  <h1 class="page-title">Menu</h1>
+
+  {error && <div class="flash flash--error">Erreur : {error}</div>}
+  {ok    && <div class="flash flash--success">Modification enregistrée.</div>}
+
+  {categories.map(cat => {
+    const catItems = allItems.filter(i => i.category_id === cat.id);
+    const supp = allSupps.find(s => s.category_id === cat.id);
+    return (
+      <div class="admin-card">
+        <!-- Category header -->
+        <div class="admin-card__header">
+          <span class="admin-card__title">{cat.name}</span>
+          <details>
+            <summary class="btn btn--ghost btn--sm">Renommer</summary>
+            <div class="edit-form" style="margin-top:0.5rem">
+              <form method="POST" action="/admin/api/menu">
+                <input type="hidden" name="action" value="update_category" />
+                <input type="hidden" name="id" value={cat.id} />
+                <div class="field-row">
+                  <div class="field">
+                    <label>Nom</label>
+                    <input type="text" name="name" value={cat.name} required />
+                  </div>
+                  <div class="field">
+                    <label>Ordre d'affichage</label>
+                    <input type="number" name="sort_order" value={cat.sort_order} min="1" required />
+                  </div>
+                </div>
+                <button class="btn btn--primary btn--sm">Enregistrer</button>
+              </form>
+            </div>
+          </details>
+          <form method="POST" action="/admin/api/menu"
+                onsubmit="return confirm('Supprimer la catégorie « ' + this.dataset.name + ' » et tous ses articles ?')"
+                data-name={cat.name}>
+            <input type="hidden" name="action" value="delete_category" />
+            <input type="hidden" name="id" value={cat.id} />
+            <button class="btn btn--danger btn--sm">Supprimer</button>
+          </form>
+        </div>
+
+        <div class="admin-card__body" style="padding:0">
+          <!-- Items table -->
+          <table class="item-table">
+            <thead>
+              <tr>
+                <th>Article</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th style="width:120px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {catItems.map(item => (
+                <tr>
+                  <td><strong>{item.name}</strong></td>
+                  <td style="color:#666">{item.description || '—'}</td>
+                  <td style="white-space:nowrap">{item.price}&thinsp;€</td>
+                  <td>
+                    <details>
+                      <summary class="btn btn--ghost btn--sm">Modifier</summary>
+                      <div class="edit-form">
+                        <form method="POST" action="/admin/api/menu">
+                          <input type="hidden" name="action" value="update_item" />
+                          <input type="hidden" name="id" value={item.id} />
+                          <div class="field">
+                            <label>Nom</label>
+                            <input type="text" name="name" value={item.name} required />
+                          </div>
+                          <div class="field">
+                            <label>Description</label>
+                            <textarea name="description">{item.description}</textarea>
+                          </div>
+                          <div class="field-row field-row--3">
+                            <div class="field">
+                              <label>Prix (€)</label>
+                              <input type="number" name="price" value={item.price} min="0" step="0.5" required />
+                            </div>
+                            <div class="field">
+                              <label>Ordre</label>
+                              <input type="number" name="sort_order" value={item.sort_order} min="1" />
+                            </div>
+                          </div>
+                          <button class="btn btn--primary btn--sm">Enregistrer</button>
+                        </form>
+                      </div>
+                    </details>
+                    <form method="POST" action="/admin/api/menu" style="display:inline"
+                          onsubmit="return confirm('Supprimer cet article ?')">
+                      <input type="hidden" name="action" value="delete_item" />
+                      <input type="hidden" name="id" value={item.id} />
+                      <button class="btn btn--danger btn--sm">×</button>
+                    </form>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <!-- Add item -->
+          <details style="border-top:1px solid #eee">
+            <summary style="padding:0.65rem 1.25rem;font-size:0.85rem;font-weight:600;color:var(--blue);cursor:pointer">
+              + Ajouter un article
+            </summary>
+            <div class="edit-form">
+              <form method="POST" action="/admin/api/menu">
+                <input type="hidden" name="action" value="add_item" />
+                <input type="hidden" name="category_id" value={cat.id} />
+                <div class="field">
+                  <label>Nom *</label>
+                  <input type="text" name="name" required />
+                </div>
+                <div class="field">
+                  <label>Description</label>
+                  <textarea name="description"></textarea>
+                </div>
+                <div class="field-row field-row--3">
+                  <div class="field">
+                    <label>Prix (€) *</label>
+                    <input type="number" name="price" min="0" step="0.5" required />
+                  </div>
+                  <div class="field">
+                    <label>Ordre</label>
+                    <input type="number" name="sort_order" value={catItems.length + 1} min="1" />
+                  </div>
+                </div>
+                <button class="btn btn--primary btn--sm">Ajouter</button>
+              </form>
+            </div>
+          </details>
+
+          <!-- Supplement -->
+          <div style="border-top:1px solid #eee;padding:0.75rem 1.25rem;background:#fafaf8">
+            <p class="section-title">Supplément</p>
+            {supp ? (
+              <details>
+                <summary class="btn btn--ghost btn--sm">Modifier le supplément</summary>
+                <div class="edit-form">
+                  <form method="POST" action="/admin/api/menu">
+                    <input type="hidden" name="action" value="update_supplement" />
+                    <input type="hidden" name="id" value={supp.id} />
+                    <div class="field-row field-row--3">
+                      <div class="field">
+                        <label>Libellé</label>
+                        <input type="text" name="label" value={supp.label} required />
+                      </div>
+                      <div class="field">
+                        <label>Détail</label>
+                        <input type="text" name="detail" value={supp.detail} />
+                      </div>
+                      <div class="field">
+                        <label>Prix (€)</label>
+                        <input type="number" name="price" value={supp.price} min="0" step="0.5" required />
+                      </div>
+                    </div>
+                    <button class="btn btn--primary btn--sm">Enregistrer</button>
+                  </form>
+                  <form method="POST" action="/admin/api/menu" style="margin-top:0.5rem"
+                        onsubmit="return confirm('Supprimer le supplément ?')">
+                    <input type="hidden" name="action" value="delete_supplement" />
+                    <input type="hidden" name="id" value={supp.id} />
+                    <button class="btn btn--danger btn--sm">Supprimer le supplément</button>
+                  </form>
+                </div>
+              </details>
+            ) : (
+              <details>
+                <summary class="btn btn--ghost btn--sm">+ Ajouter un supplément</summary>
+                <div class="edit-form">
+                  <form method="POST" action="/admin/api/menu">
+                    <input type="hidden" name="action" value="add_supplement" />
+                    <input type="hidden" name="category_id" value={cat.id} />
+                    <div class="field-row field-row--3">
+                      <div class="field">
+                        <label>Libellé *</label>
+                        <input type="text" name="label" required />
+                      </div>
+                      <div class="field">
+                        <label>Détail</label>
+                        <input type="text" name="detail" />
+                      </div>
+                      <div class="field">
+                        <label>Prix (€) *</label>
+                        <input type="number" name="price" min="0" step="0.5" required />
+                      </div>
+                    </div>
+                    <button class="btn btn--primary btn--sm">Ajouter</button>
+                  </form>
+                </div>
+              </details>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  })}
+
+  <!-- Add category -->
+  <div class="admin-card">
+    <div class="admin-card__header">
+      <span class="admin-card__title">Nouvelle catégorie</span>
+    </div>
+    <div class="admin-card__body">
+      <form method="POST" action="/admin/api/menu">
+        <input type="hidden" name="action" value="add_category" />
+        <div class="field-row">
+          <div class="field">
+            <label>Identifiant (slug) *</label>
+            <input type="text" name="id" placeholder="ex: boissons" required
+                   pattern="[a-z0-9_-]+" title="Minuscules, chiffres, tirets uniquement" />
+          </div>
+          <div class="field">
+            <label>Nom affiché *</label>
+            <input type="text" name="name" placeholder="ex: Boissons" required />
+          </div>
+          <div class="field">
+            <label>Ordre</label>
+            <input type="number" name="sort_order" value={categories.length + 1} min="1" />
+          </div>
+        </div>
+        <button class="btn btn--primary">Créer la catégorie</button>
+      </form>
+    </div>
+  </div>
+</AdminLayout>

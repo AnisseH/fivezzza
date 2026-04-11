@@ -4,9 +4,12 @@ import type { Category } from '../data/menu';
 interface Props { menu: Category[]; }
 const { menu } = Astro.props;
 
-const pizza     = menu.find(c => c.id === 'pizza')!;
-const antipasti = menu.find(c => c.id === 'antipasti')!;
-const dessert   = menu.find(c => c.id === 'dessert')!;
+// Split categories evenly between two columns.
+// floor(n/2) keeps the original layout for 3 categories (1 left, 2 right)
+// and balances 4 categories as 2+2, 5 as 2+3, etc.
+const splitAt = Math.max(1, Math.floor(menu.length / 2));
+const colLeft  = menu.slice(0, splitAt);
+const colRight = menu.slice(splitAt);
 ---
 
 <section class="menu" id="menu">
@@ -18,63 +21,67 @@ const dessert   = menu.find(c => c.id === 'dessert')!;
 
   <div class="menu__inner">
 
-    <!-- LEFT: Pizza -->
-    <div class="menu__col">
-      <h2 class="menu__cat-title">{pizza.name}</h2>
-
-      <ul class="menu__list">
-        {pizza.items.map(item => (
-          <li class="menu__item">
-            <div class="menu__item-row">
-              <span class="menu__item-name">{item.name}</span>
-              <span class="menu__item-line" aria-hidden="true"></span>
-              <span class="menu__item-price">{item.price}&thinsp;€</span>
-            </div>
-            {item.description && <p class="menu__item-desc">{item.description}</p>}
-          </li>
+    <!-- LEFT column -->
+    {colLeft.length > 0 && (
+      <div class="menu__col">
+        {colLeft.map((cat, i) => (
+          <>
+            <h2 class={`menu__cat-title${i > 0 ? ' menu__cat-title--spaced' : ''}`}>{cat.name}</h2>
+            <ul class="menu__list">
+              {cat.items.map(item => (
+                <li class="menu__item">
+                  <div class="menu__item-row">
+                    <span class="menu__item-name">{item.name}</span>
+                    <span class="menu__item-line" aria-hidden="true"></span>
+                    <span class="menu__item-price">{item.price}&thinsp;€</span>
+                  </div>
+                  {item.description && <p class="menu__item-desc">{item.description}</p>}
+                </li>
+              ))}
+            </ul>
+            {cat.note && (
+              <div class="menu__note-row">
+                <span class="menu__note-label">{cat.note.label}</span>
+                <span class="menu__note-detail">{cat.note.detail}</span>
+                <span class="menu__item-line" aria-hidden="true"></span>
+                <span class="menu__item-price">{cat.note.price}&thinsp;€</span>
+              </div>
+            )}
+          </>
         ))}
-      </ul>
+      </div>
+    )}
 
-      {pizza.note && (
-        <div class="menu__note-row">
-          <span class="menu__note-label">{pizza.note.label}</span>
-          <span class="menu__note-detail">{pizza.note.detail}</span>
-          <span class="menu__item-line" aria-hidden="true"></span>
-          <span class="menu__item-price">{pizza.note.price}&thinsp;€</span>
-        </div>
-      )}
-    </div>
-
-    <!-- RIGHT: Antipasti + Dessert -->
-    <div class="menu__col">
-      <h2 class="menu__cat-title">{antipasti.name}</h2>
-      <ul class="menu__list">
-        {antipasti.items.map(item => (
-          <li class="menu__item">
-            <div class="menu__item-row">
-              <span class="menu__item-name">{item.name}</span>
-              <span class="menu__item-line" aria-hidden="true"></span>
-              <span class="menu__item-price">{item.price}&thinsp;€</span>
-            </div>
-            {item.description && <p class="menu__item-desc">{item.description}</p>}
-          </li>
+    <!-- RIGHT column -->
+    {colRight.length > 0 && (
+      <div class="menu__col">
+        {colRight.map((cat, i) => (
+          <>
+            <h2 class={`menu__cat-title${i > 0 ? ' menu__cat-title--spaced' : ''}`}>{cat.name}</h2>
+            <ul class="menu__list">
+              {cat.items.map(item => (
+                <li class="menu__item">
+                  <div class="menu__item-row">
+                    <span class="menu__item-name">{item.name}</span>
+                    <span class="menu__item-line" aria-hidden="true"></span>
+                    <span class="menu__item-price">{item.price}&thinsp;€</span>
+                  </div>
+                  {item.description && <p class="menu__item-desc">{item.description}</p>}
+                </li>
+              ))}
+            </ul>
+            {cat.note && (
+              <div class="menu__note-row">
+                <span class="menu__note-label">{cat.note.label}</span>
+                <span class="menu__note-detail">{cat.note.detail}</span>
+                <span class="menu__item-line" aria-hidden="true"></span>
+                <span class="menu__item-price">{cat.note.price}&thinsp;€</span>
+              </div>
+            )}
+          </>
         ))}
-      </ul>
-
-      <h2 class="menu__cat-title menu__cat-title--spaced">{dessert.name}</h2>
-      <ul class="menu__list">
-        {dessert.items.map(item => (
-          <li class="menu__item">
-            <div class="menu__item-row">
-              <span class="menu__item-name">{item.name}</span>
-              <span class="menu__item-line" aria-hidden="true"></span>
-              <span class="menu__item-price">{item.price}&thinsp;€</span>
-            </div>
-            {item.description && <p class="menu__item-desc">{item.description}</p>}
-          </li>
-        ))}
-      </ul>
-    </div>
+      </div>
+    )}
 
   </div>
 </section>

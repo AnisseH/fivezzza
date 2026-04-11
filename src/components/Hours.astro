@@ -1,7 +1,11 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-const schedule = [
+interface Props {
+  schedule?: Array<{ day: string; hours: string }>;
+}
+
+const { schedule = [
   { day: 'Lundi',     hours: 'Fermé' },
   { day: 'Mardi',     hours: 'Fermé' },
   { day: 'Mercredi',  hours: '12h00 – 14h00 · 19h00 – 22h00' },
@@ -9,7 +13,7 @@ const schedule = [
   { day: 'Vendredi',  hours: '12h00 – 14h00 · 19h00 – 22h00' },
   { day: 'Samedi',    hours: '12h00 – 14h00 · 19h00 – 22h00' },
   { day: 'Dimanche',  hours: '12h00 – 14h00' },
-];
+]} = Astro.props;
 ---
 
 <section class="hours" id="hours">
