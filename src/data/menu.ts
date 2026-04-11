@@ -8,35 +8,67 @@ export interface Category {
   id: string;
   name: string;
   items: MenuItem[];
+  note?: { label: string; detail: string; price: number };
 }
 
 export const menu: Category[] = [
   {
-    id: 'classiques',
-    name: 'Les Classiques',
+    id: 'pizza',
+    name: 'Pizza',
     items: [
-      { name: 'Margherita',      description: 'Tomate, mozzarella fior di latte, basilic frais',         price: 12 },
-      { name: 'Pepperoni',       description: 'Tomate, mozzarella, pepperoni sélectionné',                price: 14 },
-      { name: 'Regina',          description: 'Tomate, mozzarella, jambon de Paris, champignons',         price: 13 },
-      { name: 'Quatre Fromages', description: 'Mozzarella, gorgonzola, chèvre, parmesan',                 price: 15 },
+      {
+        name: 'Margherita',
+        description: 'Tomate, mozzarella fior di latte, pecorino romano, basilic',
+        price: 10,
+      },
+      {
+        name: 'Végé',
+        description: 'Tomate, mozzarella fior di latte, légumes du moment, artichaut à la romaine, tomate séchée, origan',
+        price: 13,
+      },
+      {
+        name: 'Cheesy',
+        description: 'Tomate, mozzarella fior di latte, gorgonzola, pecorino romano, persillade maison',
+        price: 14,
+      },
+      {
+        name: 'Regina',
+        description: 'Tomate, mozzarella fior di latte, champignons de paris, jambon, persillade maison',
+        price: 15,
+      },
+    ],
+    note: { label: 'Suppléments', detail: '½ burrata ou jambon', price: 3 },
+  },
+  {
+    id: 'antipasti',
+    name: 'Antipasti',
+    items: [
+      {
+        name: 'Burrata',
+        description: 'Tomate séchée avec huile d\'olive, basilic, tranches de pain maison',
+        price: 9,
+      },
+      {
+        name: 'Focaccia',
+        description: 'Pain italien à l\'huile d\'olive, fleur de sel, romarin',
+        price: 5,
+      },
     ],
   },
   {
-    id: 'speciales',
-    name: 'Les Spéciales',
+    id: 'dessert',
+    name: 'Dessert',
     items: [
-      { name: 'La Fivezzza',  description: 'Tomate, mozzarella, burrata, roquette, tomates cerises',     price: 17 },
-      { name: 'Truffe Noire', description: 'Crème, mozzarella, copeaux de truffe noire, parmesan',        price: 22 },
-      { name: 'Diavola',      description: 'Tomate, mozzarella, salami épicé, piment de Calabre',         price: 15 },
-      { name: 'Nduja',        description: 'Tomate, mozzarella, nduja calabraise, miel de fleurs',        price: 16 },
-    ],
-  },
-  {
-    id: 'vegetariennes',
-    name: 'Les Végétariennes',
-    items: [
-      { name: 'Primavera',          description: 'Tomate, mozzarella, légumes grillés de saison',           price: 14 },
-      { name: 'Épinards & Ricotta', description: 'Crème, mozzarella, épinards, ricotta, ail confit, pignons', price: 14 },
+      {
+        name: 'Pizza Nocciolata',
+        description: '',
+        price: 5,
+      },
+      {
+        name: 'Mousse au chocolat',
+        description: 'Faite maison et avec amour, comme tout ce que nous servons \u2665',
+        price: 5,
+      },
     ],
   },
 ];
