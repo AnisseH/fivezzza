@@ -69,62 +69,52 @@ const ok    = url.searchParams.get('ok');
         </div>
 
         <div class="admin-card__body" style="padding:0">
-          <!-- Items table -->
-          <table class="item-table">
-            <thead>
-              <tr>
-                <th>Article</th>
-                <th>Description</th>
-                <th>Prix</th>
-                <th style="width:120px"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {catItems.map(item => (
-                <tr>
-                  <td><strong>{item.name}</strong></td>
-                  <td style="color:#666">{item.description || '—'}</td>
-                  <td style="white-space:nowrap">{item.price}&thinsp;€</td>
-                  <td>
-                    <details>
-                      <summary class="btn btn--ghost btn--sm">Modifier</summary>
-                      <div class="edit-form">
-                        <form method="POST" action="/admin/api/menu">
-                          <input type="hidden" name="action" value="update_item" />
-                          <input type="hidden" name="id" value={item.id} />
-                          <div class="field">
-                            <label>Nom</label>
-                            <input type="text" name="name" value={item.name} required />
-                          </div>
-                          <div class="field">
-                            <label>Description</label>
-                            <textarea name="description">{item.description}</textarea>
-                          </div>
-                          <div class="field-row field-row--3">
-                            <div class="field">
-                              <label>Prix (€)</label>
-                              <input type="number" name="price" value={item.price} min="0" step="0.5" required />
-                            </div>
-                            <div class="field">
-                              <label>Ordre</label>
-                              <input type="number" name="sort_order" value={item.sort_order} min="1" />
-                            </div>
-                          </div>
-                          <button class="btn btn--primary btn--sm">Enregistrer</button>
-                        </form>
-                      </div>
-                    </details>
+          <!-- Items list -->
+          <div class="item-list">
+            {catItems.map(item => (
+              <details class="item-entry">
+                <summary class="item-entry__row">
+                  <span class="item-entry__name">{item.name}</span>
+                  <span class="item-entry__desc">{item.description || ''}</span>
+                  <span class="item-entry__price">{item.price}&thinsp;€</span>
+                  <span class="item-entry__actions" onclick="event.stopPropagation()">
+                    <span class="btn btn--ghost btn--sm">Modifier ▾</span>
                     <form method="POST" action="/admin/api/menu" style="display:inline"
                           onsubmit="return confirm('Supprimer cet article ?')">
                       <input type="hidden" name="action" value="delete_item" />
                       <input type="hidden" name="id" value={item.id} />
                       <button class="btn btn--danger btn--sm">×</button>
                     </form>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </span>
+                </summary>
+                <div class="item-entry__form">
+                  <form method="POST" action="/admin/api/menu">
+                    <input type="hidden" name="action" value="update_item" />
+                    <input type="hidden" name="id" value={item.id} />
+                    <div class="field-row">
+                      <div class="field">
+                        <label>Nom</label>
+                        <input type="text" name="name" value={item.name} required />
+                      </div>
+                      <div class="field">
+                        <label>Prix (€)</label>
+                        <input type="number" name="price" value={item.price} min="0" step="0.5" required style="max-width:120px" />
+                      </div>
+                      <div class="field">
+                        <label>Ordre</label>
+                        <input type="number" name="sort_order" value={item.sort_order} min="1" style="max-width:80px" />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label>Description</label>
+                      <textarea name="description">{item.description}</textarea>
+                    </div>
+                    <button class="btn btn--primary btn--sm">Enregistrer</button>
+                  </form>
+                </div>
+              </details>
+            ))}
+          </div>
 
           <!-- Add item -->
           <details style="border-top:1px solid #eee">

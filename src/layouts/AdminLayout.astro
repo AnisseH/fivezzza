@@ -171,6 +171,35 @@ const pathname = new URL(Astro.request.url).pathname;
   .edit-form { padding: 0.75rem; background: #f8f8f6; border-top: 1px solid var(--border); }
   .edit-form .field-row { margin-bottom: 0.5rem; }
 
+  /* Item list (replaces table) */
+  .item-list { }
+  .item-entry { border-bottom: 1px solid #f0f0ee; }
+  .item-entry:last-child { border-bottom: none; }
+
+  .item-entry__row {
+    display: grid;
+    grid-template-columns: 160px 1fr 60px auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.1s;
+  }
+  .item-entry__row:hover { background: #f7f7f5; }
+  .item-entry[open] > .item-entry__row { background: #f0f0ee; }
+
+  .item-entry__name { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item-entry__desc { font-size: 0.82rem; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item-entry__price { font-size: 0.9rem; font-weight: 600; text-align: right; white-space: nowrap; }
+  .item-entry__actions { display: flex; gap: 0.4rem; align-items: center; justify-content: flex-end; flex-shrink: 0; }
+
+  .item-entry__form {
+    padding: 1rem 1.25rem;
+    background: #f8f8f6;
+    border-top: 1px solid var(--border);
+  }
+
   .page-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--dark); }
   .section-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 0.75rem; }
 
