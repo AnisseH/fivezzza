@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import logoImg from '../assets/logo.jpeg';
+import logoImg from '../assets/pizza_logo_no_text.png';
 ---
 <nav class="nav" id="nav">
   <div class="nav__inner">
@@ -43,10 +43,11 @@ import logoImg from '../assets/logo.jpeg';
     padding: 0.75rem 2rem;
   }
   .nav__logo img {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain;
+    background: var(--cream);
     border: 2px solid rgba(245,237,216,0.5);
     transition: border-color 0.2s;
   }

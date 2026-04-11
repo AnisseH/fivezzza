@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import heroImg from '../assets/hero-bg.jpg';
-import logoImg from '../assets/logo.jpeg';
 ---
 
 <section class="hero" id="home">
@@ -24,16 +23,63 @@ import logoImg from '../assets/logo.jpeg';
 
     <div class="hero__content">
       <div class="hero__badge">
+        <!-- Ring: cream circle, blue border, red drop-shadow -->
         <div class="hero__ring">
-          <Image
-            src={logoImg}
+          <!-- Image first = behind the SVG text ring -->
+          <img
+            src="/favicon-512x512.png"
             alt="Fivezzza Pizzeria logo"
-            width={264}
-            height={264}
-            quality={85}
+            width="246"
+            height="246"
             fetchpriority="high"
             loading="eager"
+            class="hero__ring-img"
           />
+
+          <!-- SVG second = on top so text is readable over the image edge -->
+          <svg
+            class="hero__ring-text"
+            viewBox="0 0 300 300"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <!--
+                Image: inset 32px → CSS r=123 → SVG r≈115.
+                Text sits just outside the image edge in the cream band.
+                FIVEZZZA arc r=120 → glyphs extend outward toward blue border.
+                pizzeria  arc r=126 → glyphs extend inward to r≈112 (just inside image edge).
+              -->
+              <path id="fivezzza-arc" d="M 30,150 A 120,120 0 0,1 270,150"/>
+              <path id="pizzeria-arc" d="M 24,150 A 126,126 0 0,0 276,150"/>
+            </defs>
+
+            <!-- FIVEZZZA at top, brand red, Bungee Shade -->
+            <text
+              fill="#ed5838"
+              stroke="#ed5838"
+              stroke-width="0.8"
+              paint-order="stroke fill"
+              font-family="'Bungee Shade', cursive"
+              font-size="21"
+              letter-spacing="5"
+            >
+              <textPath href="#fivezzza-arc" text-anchor="middle" startOffset="50%">FIVEZZZA</textPath>
+            </text>
+
+            <!-- pizzeria at bottom, brand blue, Playfair italic -->
+            <text
+              fill="#2855B5"
+              stroke="#2855B5"
+              stroke-width="0.8"
+              paint-order="stroke fill"
+              font-family="'Fredoka', sans-serif"
+              font-size="16"
+              letter-spacing="5"
+            >
+              <textPath href="#pizzeria-arc" text-anchor="middle" startOffset="50%">PIZZERIA</textPath>
+            </text>
+          </svg>
         </div>
       </div>
 
@@ -74,7 +120,7 @@ import logoImg from '../assets/logo.jpeg';
     overflow: hidden;
   }
 
-  /* Background image — absolutely positioned, optimized by astro:assets */
+  /* Background image */
   .hero__bg-img {
     position: absolute;
     inset: 0;
@@ -121,24 +167,39 @@ import logoImg from '../assets/logo.jpeg';
   }
 
   .hero__badge { flex-shrink: 0; }
+
+  /* Ring: cream background, blue border, red offset shadow */
   .hero__ring {
-    width: 280px;
-    height: 280px;
+    position: relative;
+    width: 310px;
+    height: 310px;
     border-radius: 50%;
     border: 6px solid var(--blue);
-    padding: 4px;
-    box-shadow: 8px 8px 0 var(--red);
     background: var(--cream);
+    box-shadow: 10px 10px 0 var(--red);
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    /* no overflow:hidden — lets the SVG text be visible near the border */
   }
-  .hero__ring img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
+
+  /* Pizza image — inset controls size, no explicit width/height override */
+  .hero__ring-img {
+    position: absolute;
+    inset: 32px;
+    width: calc(100% - 64px);
+    height: calc(100% - 64px);
     object-fit: contain;
+  }
+
+  /* SVG text ring — no z-index, so DOM order keeps it behind the image */
+  .hero__ring-text {
+    position: absolute;
+    inset: -6px; /* compensate for the border so SVG coords align with ring edge */
+    width: calc(100% + 12px);
+    height: calc(100% + 12px);
+    overflow: visible;
+    pointer-events: none;
   }
 
   .hero__text { color: var(--cream); }
@@ -175,9 +236,16 @@ import logoImg from '../assets/logo.jpeg';
   }
 
   @media (max-width: 820px) {
-    .hero__content { flex-direction: column; text-align: center; gap: 2.5rem; }
-    .hero__ring { width: 200px; height: 200px; }
+    .hero__stage { padding: 4rem 1.5rem 3rem; }
+    .hero__content { flex-direction: column; text-align: center; gap: 2rem; }
+    .hero__ring { width: 230px; height: 230px; box-shadow: 6px 6px 0 var(--red); }
+    .hero__ring-img { inset: 18px; width: calc(100% - 36px); height: calc(100% - 36px); }
     .hero__ctas { justify-content: center; }
-    .hero__corner { width: 100px; height: 100px; }
+    .hero__corner { width: 80px; height: 80px; }
+  }
+  @media (max-width: 420px) {
+    .hero__ring { width: 190px; height: 190px; box-shadow: 5px 5px 0 var(--red); }
+    .hero__ring-img { inset: 14px; width: calc(100% - 28px); height: calc(100% - 28px); }
+    .hero__title { font-size: 3rem; }
   }
 </style>
