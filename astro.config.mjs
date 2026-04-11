@@ -4,7 +4,7 @@ import icon from 'astro-icon';
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  site: 'https://fivezzza.pages.dev', // update once you have a custom domain
+  site: 'https://fivezzza.fr',
   output: 'server',
   adapter: cloudflare({
     platformProxy: { enabled: true },

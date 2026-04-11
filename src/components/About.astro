@@ -25,7 +25,12 @@ import logoImg from '../assets/logo.jpeg';
         font toute la différence — du premier regard jusqu'à la dernière bouchée.
       </p>
       <p class="about__body">
-        Parce qu'une bonne pizza, ça ne s'improvise pas.
+        Retrouvez-nous à la <a href="https://www.chaudbouillon.earth/" target="_blank" rel="noopener noreferrer" class="about__link">Halle Gourmande de Chaud Bouillon</a>,
+        un collectif de cuisiniers artisanaux au cœur de Lille.
+      </p>
+      <p class="about__body">
+        Nos produits d'exception sont sourcés chez <a href="https://www.carliervogliazzo.com/" target="_blank" rel="noopener noreferrer" class="about__link">Carlier Vogliazzo</a>,
+        l'épicerie italienne de référence.
       </p>
 
       <!-- Feature pills -->
@@ -123,6 +128,12 @@ import logoImg from '../assets/logo.jpeg';
     margin-bottom: 1rem;
     max-width: 52ch;
   }
+  .about__link {
+    color: var(--red-a11y);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
+  .about__link:hover { color: var(--blue); }
 
   /* Feature pills */
   .about__features {
