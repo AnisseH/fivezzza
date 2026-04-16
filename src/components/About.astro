@@ -5,24 +5,9 @@ import logoImg from "../assets/logo-full.png";
 ---
 
 <section class="about" id="about">
-  <img
-    src="/pizza-deco.png"
-    class="about__deco about__deco--1"
-    aria-hidden="true"
-    alt=""
-  />
-  <img
-    src="/pizza-deco.png"
-    class="about__deco about__deco--2"
-    aria-hidden="true"
-    alt=""
-  />
-  <img
-    src="/pizza-deco.png"
-    class="about__deco about__deco--3"
-    aria-hidden="true"
-    alt=""
-  />
+  {[1, 2, 3].map(n => (
+    <img src="/pizza-deco.png" class={`about__deco about__deco--${n}`} aria-hidden="true" alt="" loading="lazy" />
+  ))}
   <div class="about__inner">
     <!-- Badge side -->
     <div class="about__visual">
@@ -123,8 +108,6 @@ import logoImg from "../assets/logo-full.png";
   .about__inner {
     position: relative;
     z-index: 1;
-  }
-  .about__inner {
     max-width: 1100px;
     margin: 0 auto;
     display: flex;

@@ -17,8 +17,13 @@ import logoImg from '../assets/pizza_logo_no_text.png';
 
 <script>
   const nav = document.getElementById('nav')!;
+  let scrolled = false;
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('nav--scrolled', window.scrollY > 60);
+    const now = window.scrollY > 60;
+    if (now !== scrolled) {
+      scrolled = now;
+      nav.classList.toggle('nav--scrolled', now);
+    }
   }, { passive: true });
 </script>
 

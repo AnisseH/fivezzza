@@ -56,8 +56,8 @@ import heroImg from '../assets/hero-bg.jpg';
 
             <!-- FIVEZZZA at top, brand red, Bungee Shade -->
             <text
-              fill="#ed5838"
-              stroke="#ed5838"
+              fill="var(--red)"
+              stroke="var(--red)"
               stroke-width="0.8"
               paint-order="stroke fill"
               font-family="'Bungee Shade', cursive"
@@ -67,10 +67,10 @@ import heroImg from '../assets/hero-bg.jpg';
               <textPath href="#fivezzza-arc" text-anchor="middle" startOffset="50%">FIVEZZZA</textPath>
             </text>
 
-            <!-- pizzeria at bottom, brand blue, Playfair italic -->
+            <!-- pizzeria at bottom, brand blue, Fredoka -->
             <text
-              fill="#2855B5"
-              stroke="#2855B5"
+              fill="var(--blue)"
+              stroke="var(--blue)"
               stroke-width="0.8"
               paint-order="stroke fill"
               font-family="'Fredoka', sans-serif"
@@ -94,10 +94,6 @@ import heroImg from '../assets/hero-bg.jpg';
       </div>
     </div>
 
-    <div class="hero__corner hero__corner--tl" aria-hidden="true"></div>
-    <div class="hero__corner hero__corner--tr" aria-hidden="true"></div>
-    <div class="hero__corner hero__corner--bl" aria-hidden="true"></div>
-    <div class="hero__corner hero__corner--br" aria-hidden="true"></div>
   </div>
 </section>
 
@@ -140,21 +136,6 @@ import heroImg from '../assets/hero-bg.jpg';
       rgba(255,246,232,0.08);
     z-index: 1;
   }
-
-  /* Corner checker squares */
-  .hero__corner {
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    background-image: repeating-conic-gradient(var(--red) 0% 25%, transparent 0% 50%);
-    background-size: 30px 30px;
-    opacity: 0.28;
-    z-index: 2;
-  }
-  .hero__corner--tl { top: 0; left: 0; }
-  .hero__corner--tr { top: 0; right: 0; }
-  .hero__corner--bl { bottom: 0; left: 0; }
-  .hero__corner--br { bottom: 0; right: 0; }
 
   .hero__content {
     position: relative;
@@ -241,7 +222,6 @@ import heroImg from '../assets/hero-bg.jpg';
     .hero__ring { width: 230px; height: 230px; box-shadow: 6px 6px 0 var(--red); }
     .hero__ring-img { inset: 18px; width: calc(100% - 36px); height: calc(100% - 36px); }
     .hero__ctas { justify-content: center; }
-    .hero__corner { width: 80px; height: 80px; }
   }
   @media (max-width: 420px) {
     .hero__ring { width: 190px; height: 190px; box-shadow: 5px 5px 0 var(--red); }
