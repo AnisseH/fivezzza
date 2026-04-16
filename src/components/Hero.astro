@@ -1,22 +1,21 @@
 ---
-import { Image } from 'astro:assets';
-import heroImg from '../assets/hero-bg.jpg';
 ---
 
 <section class="hero" id="home">
   <div class="checker hero__stripe-top"></div>
 
   <div class="hero__stage">
-    <!-- LCP image — optimized to WebP by Astro, eager loaded -->
-    <Image
-      src={heroImg}
+    <!-- LCP image — pre-optimized WebP, eager loaded -->
+    <img
+      src="/hero-bg-1280.webp"
+      srcset="/hero-bg-768.webp 768w, /hero-bg-1280.webp 1280w, /hero-bg-1920.webp 1920w"
+      sizes="100vw"
       alt=""
       class="hero__bg-img"
       loading="eager"
       fetchpriority="high"
-      quality={50}
-      widths={[768, 1280, 1920]}
-      sizes="100vw"
+      width="1280"
+      height="853"
     />
     <!-- Gradient overlay -->
     <div class="hero__overlay" aria-hidden="true"></div>
@@ -27,7 +26,7 @@ import heroImg from '../assets/hero-bg.jpg';
         <div class="hero__ring">
           <!-- Image first = behind the SVG text ring -->
           <img
-            src="/favicon-512x512.png"
+            src="/hero-ring.webp"
             alt="Fivezzza Pizzeria logo"
             width="246"
             height="246"

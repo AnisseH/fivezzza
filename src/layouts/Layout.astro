@@ -118,6 +118,11 @@ const menuJsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(menuJsonLd)} />
 
+    <!-- Preload LCP hero image -->
+    <link rel="preload" as="image" href="/hero-bg-768.webp"
+      imagesrcset="/hero-bg-768.webp 768w, /hero-bg-1280.webp 1280w, /hero-bg-1920.webp 1920w"
+      imagesizes="100vw" fetchpriority="high" />
+
     <!-- Animations -->
     <script src="/gsap.min.js" defer></script>
     <script src="/ScrollTrigger.min.js" defer></script>
@@ -140,6 +145,7 @@ const menuJsonLd = {
   :root {
     --red:        #ed5838;
     --red-a11y:   #B53520; /* darkened red — 4.8:1 on cream */
+    --red-a11y-d: #9A2B17; /* hover for accessible red buttons */
     --red-on-dark:#ed5838; /* main red — 4.9:1 on --dark */
     --red-d:      #C94A30;
     --blue:       #2855B5;
@@ -186,8 +192,8 @@ const menuJsonLd = {
     cursor: pointer;
     transition: background 0.2s, color 0.2s, transform 0.15s;
   }
-  .btn--red  { background: var(--red); color: var(--cream); border-color: var(--red); }
-  .btn--red:hover { background: var(--red-d); border-color: var(--red-d); transform: translateY(-2px); }
+  .btn--red  { background: var(--red-a11y); color: var(--cream); border-color: var(--red-a11y); }
+  .btn--red:hover { background: var(--red-a11y-d); border-color: var(--red-a11y-d); transform: translateY(-2px); }
   .btn--outline { background: transparent; color: var(--cream); border-color: var(--cream); }
   .btn--outline:hover { background: var(--cream); color: var(--dark); }
 </style>

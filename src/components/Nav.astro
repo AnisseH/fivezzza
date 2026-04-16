@@ -1,11 +1,9 @@
 ---
-import { Image } from 'astro:assets';
-import logoImg from '../assets/pizza_logo_no_text.png';
 ---
 <nav class="nav" id="nav">
   <div class="nav__inner">
     <a href="#home" class="nav__logo" aria-label="Fivezzza — retour accueil">
-      <Image src={logoImg} alt="Fivezzza Pizzeria" width={56} height={56} quality={80} loading="eager" />
+      <img src="/logo-nav.webp" alt="Fivezzza Pizzeria" width="56" height="56" loading="eager" />
     </a>
     <ul class="nav__links" role="list">
       <li><a href="#menu">La Carte</a></li>

@@ -1,22 +1,19 @@
 ---
 import { Icon } from "astro-icon/components";
-import { Image } from "astro:assets";
-import logoImg from "../assets/logo-full.png";
 ---
 
 <section class="about" id="about">
   {[1, 2, 3].map(n => (
-    <img src="/pizza-deco.png" class={`about__deco about__deco--${n}`} aria-hidden="true" alt="" loading="lazy" />
+    <img src="/pizza-deco.webp" class={`about__deco about__deco--${n}`} aria-hidden="true" alt="" loading="lazy" />
   ))}
   <div class="about__inner">
     <!-- Badge side -->
     <div class="about__visual">
-      <Image
-        src={logoImg}
+      <img
+        src="/logo-full.webp"
         alt="Fivezzza Pizzeria logo"
-        width={420}
-        height={247}
-        quality={85}
+        width="420"
+        height="247"
         loading="lazy"
       />
     </div>
